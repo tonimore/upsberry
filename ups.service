@@ -1,14 +1,21 @@
 [Unit]
 # For Install service (for SystemD only):
-# check and edit the parameter: ExecStart=xxxxxxxx
-# then:
-# sudo cp ups.service /lib/systemd/system/
-# sudo chmod 644 /lib/systemd/system/ups.service
-# sudo systemctl daemon-reload
-# sudo systemctl enable ups.service
 #
+# $ sudo cp ups.service /lib/systemd/system/
+# $ sudo chmod 644 /lib/systemd/system/ups.service
+# Check and edit the parameter: ExecStart=xxxxxxxx (if need): 
+# $ sudo vim /lib/systemd/system/ups.service
+#
+# then reload, enable and start the service:
+# $ sudo systemctl daemon-reload
+# $ sudo systemctl enable ups.service
+# $ sudo systemctl start ups.service
+# and finally, for logs:
+# $ sudo journalctl -u ups -f
+
+# You can write messages to different file:
 # Add file with lines to /etc/rsyslod.d/10-ups.conf and then run: sudo systemctl restart rsyslog.service
-# if $programname == 'ups' then /var/log/ups.log
+# if $programname == 'ups18650' then /var/log/ups.log
 # & stop
 
 Description=UPS18650 service
@@ -24,7 +31,7 @@ Type=simple
 
 #WorkingDirectory=
 
-ExecStart=/usr/lib/ups18650/ups.py
+ExecStart=/usr/bin/python /usr/lib/ups/ups.py
 
 # kill only main process
 KillMode=process
