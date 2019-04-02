@@ -1,0 +1,39 @@
+[Unit]
+# For Install service (for SystemD only):
+# check and edit the parameter: ExecStart=xxxxxxxx
+# then:
+# sudo cp ups.service /lib/systemd/system/
+# sudo chmod 644 /lib/systemd/system/ups.service
+# sudo systemctl daemon-reload
+# sudo systemctl enable ups.service
+#
+# Add file with lines to /etc/rsyslod.d/10-ups.conf and then run: sudo systemctl restart rsyslog.service
+# if $programname == 'ups' then /var/log/ups.log
+# & stop
+
+Description=UPS18650 service
+After=multi-user.target
+After=syslog.target
+
+
+[Service]
+
+SyslogIdentifier=ups18650
+
+Type=simple
+
+#WorkingDirectory=
+
+ExecStart=/usr/lib/ups18650/ups.py
+
+# kill only main process
+KillMode=process
+
+# wait before send KILL signal
+TimeoutStopSec=10
+
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target
