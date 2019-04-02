@@ -207,7 +207,7 @@ def send_email(ev):
     try:        
         server = smtplib.SMTP(smtp_server)
         #server.set_debuglevel(1)
-        server.send_email("", to_rcp, msg.as_string())
+        server.sendmail("", to_rcp, msg.as_string())
         server.quit()
     except Exception as e:
         logger.error("Exception during send email: {}".format(e))    
@@ -310,12 +310,12 @@ def main_loop():
 
         now_capacity = read_capacity()
         now_voltage = read_voltage()
-        nowCurrent = read_current()
+        now_current = read_current()
 
         if data.full(): data.get()
-        data.put({"Current" : nowCurrent, "Voltage" : now_voltage, "ts" : time.time()})
+        data.put({"Current" : now_current, "Voltage" : now_voltage, "ts" : time.time()})
 
-        logger.debug("PowerON {}; Voltage {:.2f}; Capacity {}; Current: {}".format(powerOK(), now_voltage, now_capacity, nowCurrent))
+        logger.debug("PowerON {}; Voltage {:.2f}; Capacity {}; Current: {}".format(powerOK(), now_voltage, now_capacity, now_current))
 
         if now_capacity < battery_critical_level:
             if last_battery != evnt.batteryCritical:
